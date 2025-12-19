@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.API_URL;
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const config = () => {
     return {
@@ -9,12 +9,12 @@ const config = () => {
 };
 
 const getUsers = async () => {
-    const response = await axios.get(`${API_URL}/api/users`, config());
+    const response = await axios.get(`${NEXT_PUBLIC_API_URL}/api/users`, config());
     return response.data;
 };
 
 const deleteUser = async (id: string) => {
-    const response = await axios.delete(`${API_URL}/api/users/${id}`, config());
+    const response = await axios.delete(`${NEXT_PUBLIC_API_URL}/api/users/${id}`, config());
     return response.data;
 };
 

@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-const API_ENDPOINT = `${process.env.API_URL}/api/auth/`;
+const API_ENDPOINT = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/`;
 
 export async function loginUser(prevState: any, formData: FormData) {
     const email = formData.get('email');

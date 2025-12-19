@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_ENDPOINT = `${process.env.API_URL}/api/auth/`;
+const API_ENDPOINT = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/`;
 
 // Register user
 const register = async (userData: any) => {

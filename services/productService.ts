@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-const API_URL = process.env.API_URL;
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const getProducts = async (keyword = '') => {
-    const response = await axios.get(`${API_URL}/api/products?keyword=${keyword}`);
+    const response = await axios.get(`${NEXT_PUBLIC_API_URL}/api/products?keyword=${keyword}`);
     return response.data;
 };
 
 const getProductById = async (id: string) => {
-    const response = await axios.get(`${API_URL}/api/products/${id}`);
+    const response = await axios.get(`${NEXT_PUBLIC_API_URL}/api/products/${id}`);
     return response.data;
 };
 
@@ -21,17 +21,17 @@ const config = () => {
 };
 
 const deleteProduct = async (id: string) => {
-    const response = await axios.delete(`${API_URL}/api/products/${id}`, config());
+    const response = await axios.delete(`${NEXT_PUBLIC_API_URL}/api/products/${id}`, config());
     return response.data;
 };
 
 const createProduct = async (productData?: any) => {
-    const response = await axios.post(`${API_URL}/api/products`, productData || {}, config());
+    const response = await axios.post(`${NEXT_PUBLIC_API_URL}/api/products`, productData || {}, config());
     return response.data;
 };
 
 const updateProduct = async (product: any) => {
-    const response = await axios.put(`${API_URL}/api/products/${product._id}`, product, config());
+    const response = await axios.put(`${NEXT_PUBLIC_API_URL}/api/products/${product._id}`, product, config());
     return response.data;
 };
 
