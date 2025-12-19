@@ -9,7 +9,11 @@ const initialState = {
     success: false,
 };
 
-export default function LoginForm() {
+interface LoginFormProps {
+    redirectUrl: string;
+}
+
+export default function LoginForm({ redirectUrl }: LoginFormProps) {
     const [state, formAction, isPending] = useActionState(loginUser, initialState);
 
     return (
@@ -27,6 +31,7 @@ export default function LoginForm() {
                     </div>
                 )}
                 <form className="space-y-6" action={formAction}>
+                    <input type="hidden" name="redirect" value={redirectUrl} />
                     <div>
                         <label
                             htmlFor="email"

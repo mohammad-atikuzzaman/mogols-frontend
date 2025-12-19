@@ -1,101 +1,107 @@
 import Link from "next/link";
-import { getSession } from "./actions/auth";
-import LogoutButton from "../components/LogoutButton";
+import ProductCard from "../components/ProductCard";
+import { ArrowRight, Leaf, ShieldCheck, Truck } from "lucide-react";
+
+import productService from "../services/productService";
 
 export default async function Home() {
-  const user = await getSession();
-
+  const products: any[] = await productService.getProducts();
+  const featuredProducts = products.slice(0, 4); // Show top 4
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black text-zinc-900 dark:text-zinc-100">
-      <main className="flex w-full max-w-5xl flex-col items-center justify-between p-24">
-        <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-          <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-            Mogols Authentication System (Server Component)
-          </p>
-          <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-            {user ? (
-              <div className="flex items-center gap-4">
-                <span className="font-bold">Welcome, {user.name} ({user.role})</span>
-                <LogoutButton />
-              </div>
-            ) : (
-              <div className="flex gap-4">
-                <Link
-                  href="/login"
-                  className="pointer-events-auto flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0 font-bold hover:text-indigo-400"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  className="pointer-events-auto flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0 font-bold hover:text-indigo-400"
-                >
-                  Register
-                </Link>
-              </div>
-            )}
+    <div className="flex flex-col min-h-screen">
+      {/* Hero Section */}
+      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-emerald-100 dark:from-zinc-900 dark:to-zinc-800 -z-10" />
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+          <div className="flex-1 space-y-6 text-center md:text-left">
+            <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-green-800 uppercase bg-green-200 rounded-full dark:bg-green-900 dark:text-green-100">
+              100% Organic & Pure
+            </span>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+              Discover Nature's <br /> <span className="text-green-600 dark:text-green-400">Finest Gifts</span>
+            </h1>
+            <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-lg mx-auto md:mx-0">
+              Authentic honey, fresh fruits, organic oils, and nutritious seeds delivered straight to your doorstep.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+              <Link href="/shop" className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-green-600 rounded-full hover:bg-green-700 transition duration-300 shadow-lg hover:shadow-green-500/30">
+                Shop Now <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+              <Link href="/about" className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-green-700 bg-white border border-green-200 rounded-full hover:bg-green-50 transition duration-300 dark:bg-zinc-800 dark:text-green-400 dark:border-zinc-700 dark:hover:bg-zinc-700">
+                Learn More
+              </Link>
+            </div>
+          </div>
+
+          {/* Abstract Shape or Image Placeholder */}
+          <div className="flex-1 relative h-[400px] w-full hidden md:block">
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1615485925763-86786278061e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')] bg-cover bg-center rounded-3xl rotate-3 shadow-2xl opacity-90 hover:rotate-0 transition duration-500"></div>
           </div>
         </div>
+      </section>
 
-        <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-to-br before:from-transparent before:to-blue-700 before:opacity-10 before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-to-t after:from-sky-900 after:via-[#0141ff] after:opacity-40 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-          <h1 className="text-6xl font-bold tracking-tighter">
-            Mogols<span className="text-indigo-500">Auth</span>
-          </h1>
-        </div>
-
-        <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-3 lg:text-left mt-20 gap-8">
-          {user ? (
-            <>
-              <div className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-                <h2 className={`mb-3 text-2xl font-semibold`}>
-                  Profile{' '}
-                  <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                    -&gt;
-                  </span>
-                </h2>
-                <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-                  View your user profile and details.
-                </p>
-                <div className="mt-4 p-4 bg-gray-100 dark:bg-neutral-900 rounded-md text-left text-xs font-mono">
-                  <p>ID: {user._id}</p>
-                  <p>Email: {user.email}</p>
-                  <p>Role: {user.role}</p>
-                </div>
-              </div>
-
-              {user.role === 'admin' && (
-                <div className="group rounded-lg border border-red-500/50 px-5 py-4 transition-colors hover:border-red-500 hover:bg-red-500/10 hover:dark:border-red-500 hover:dark:bg-red-900/20">
-                  <h2 className={`mb-3 text-2xl font-semibold text-red-500`}>
-                    Admin Panel{' '}
-                    <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                      -&gt;
-                    </span>
-                  </h2>
-                  <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-                    Restricted access for Admins only.
-                  </p>
-                </div>
-              )}
-
-              <div className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-                <h2 className={`mb-3 text-2xl font-semibold`}>
-                  Dashboard{' '}
-                  <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                    -&gt;
-                  </span>
-                </h2>
-                <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-                  General dashboard access for all users.
-                </p>
-              </div>
-            </>
-          ) : (
-            <div className="col-span-3 text-center">
-              <p className="text-xl">Please login to access the secure dashboard.</p>
+      {/* Features Grid */}
+      <section className="py-20 bg-white dark:bg-zinc-950">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 transition hover:-translate-y-1">
+              <Leaf className="h-10 w-10 text-green-600 mb-4" />
+              <h3 className="text-xl font-bold mb-2">100% Organic</h3>
+              <p className="text-zinc-600 dark:text-zinc-400">Certified organic products sourced directly from nature without harmful chemicals.</p>
             </div>
-          )}
+            <div className="p-8 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 transition hover:-translate-y-1">
+              <ShieldCheck className="h-10 w-10 text-green-600 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Authentic & Pure</h3>
+              <p className="text-zinc-600 dark:text-zinc-400">We guarantee purity. No adulteration, just nature's goodness in every package.</p>
+            </div>
+            <div className="p-8 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 transition hover:-translate-y-1">
+              <Truck className="h-10 w-10 text-green-600 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Fast Delivery</h3>
+              <p className="text-zinc-600 dark:text-zinc-400">Quick and safe delivery across the country to keep products fresh.</p>
+            </div>
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* Featured Products */}
+      <section className="py-20 bg-zinc-50 dark:bg-zinc-900/50">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-end mb-12">
+            <div>
+              <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50 mb-2">Featured Products</h2>
+              <p className="text-zinc-600 dark:text-zinc-400">Handpicked favorites just for you</p>
+            </div>
+            <Link href="/shop" className="hidden md:flex items-center text-green-600 hover:text-green-700 font-medium">
+              View All Products <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProducts.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+
+          <div className="mt-12 text-center md:hidden">
+            <Link href="/shop" className="inline-flex items-center text-green-600 hover:text-green-700 font-medium">
+              View All Products <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="py-20 bg-green-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Join the Mogols Family</h2>
+          <p className="text-green-100 mb-8 max-w-2xl mx-auto">Subscribe for exclusive offers, health tips, and new product announcements.</p>
+          <form className="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
+            <input type="email" placeholder="Enter your email" className="flex-1 px-6 py-3 rounded-full text-zinc-900 focus:outline-none focus:ring-2 focus:ring-green-400" />
+            <button type="button" className="px-8 py-3 bg-green-500 hover:bg-green-400 text-white font-semibold rounded-full transition shadow-lg">Subscribe</button>
+          </form>
+        </div>
+      </section>
     </div>
   );
 }
