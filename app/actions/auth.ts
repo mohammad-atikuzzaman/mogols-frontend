@@ -26,9 +26,12 @@ export async function loginUser(prevState: any, formData: FormData) {
 
         // Set persistent cookie with the token
         const cookieStore = await cookies();
+        const isProduction = process.env.NODE_ENV === 'production';
+
         cookieStore.set('token', data.token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: isProduction,
+            sameSite: isProduction ? 'none' : 'lax',
             maxAge: 30 * 24 * 60 * 60, // 30 days
             path: '/',
         });
@@ -81,9 +84,12 @@ export async function registerUser(prevState: any, formData: FormData) {
         }
 
         const cookieStore = await cookies();
+        const isProduction = process.env.NODE_ENV === 'production';
+
         cookieStore.set('token', data.token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: isProduction,
+            sameSite: isProduction ? 'none' : 'lax',
             maxAge: 30 * 24 * 60 * 60,
             path: '/',
         });
