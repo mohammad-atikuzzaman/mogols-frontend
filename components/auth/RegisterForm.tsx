@@ -1,8 +1,9 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { registerUser } from '../../app/actions/auth';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const initialState = {
     message: '',
@@ -11,6 +12,14 @@ const initialState = {
 
 export default function RegisterForm() {
     const [state, formAction, isPending] = useActionState(registerUser, initialState);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (state?.success && (state as any).token) {
+            localStorage.setItem('token', (state as any).token);
+            router.push('/');
+        }
+    }, [state, router]);
 
     return (
         <>

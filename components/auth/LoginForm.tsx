@@ -1,8 +1,9 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { loginUser } from '../../app/actions/auth';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const initialState = {
     message: '',
@@ -15,6 +16,14 @@ interface LoginFormProps {
 
 export default function LoginForm({ redirectUrl }: LoginFormProps) {
     const [state, formAction, isPending] = useActionState(loginUser, initialState);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (state?.success && (state as any).token) {
+            localStorage.setItem('token', (state as any).token);
+            router.push(redirectUrl || '/');
+        }
+    }, [state, redirectUrl, router]);
 
     return (
         <>

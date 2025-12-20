@@ -3,7 +3,11 @@ import axios from 'axios';
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const config = () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     return {
+        headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+        },
         withCredentials: true,
     };
 };

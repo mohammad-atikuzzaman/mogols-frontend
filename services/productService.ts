@@ -13,9 +13,13 @@ const getProductById = async (id: string) => {
 };
 
 // Config for simple requests (public) is empty or defaults
-// But for protected routes we need credentials
+// But for protected routes we need credentials AND authorization header
 const config = () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     return {
+        headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+        },
         withCredentials: true,
     };
 };

@@ -36,31 +36,11 @@ export async function loginUser(prevState: any, formData: FormData) {
             path: '/',
         });
 
-        // We will return success and user data, and the client component (LoginForm) will handle localStorage set (via useEffect) 
-        // OR simply redirect. Since useActionState is used, we might want to just redirect here?
-        // But the user wants seamless experience. 
-        // Actually, for Server Actions, we can just redirect. The client side token persistence is tricky with server actions only 
-        // if we don't have a client component to catch the state.
-        // Let's assume the LoginForm will handle state update if we return, BUT we also want to redirect.
-        // A common pattern: if success, redirect.
-
-        // HOWEVER, to fix the specific issue "checkout page redirects to login even if logged in", 
-        // it means the client side logic (productService/orderService) likely checks localStorage or doesn't have the cookie in browser context yet?
-        // Actually, with httpOnly cookie, client JS cannot read it. 
-        // So services MUST rely on the browser sending the cookie automatically (which we enabled with withCredentials: true).
-        // The issue "add product page not found" and "checkout redirecting" suggests state mismatch.
-
-        // Let's return the user data so the client form can save it to localStorage for UI state (like "Welcome User")
-        // But we cannot redirect AND return a value easily in server actions unless we use a specific pattern.
-        // Let's stick to redirecting for now, as that's standard for login.
-        // If we want to set localStorage, we needs a client side effect.
+        return { success: true, token: data.token, message: 'Login successful' };
 
     } catch (error: any) {
         return { message: error.message || 'Something went wrong', success: false };
     }
-
-    const redirectPath = formData.get('redirect') as string || '/';
-    redirect(redirectPath);
 }
 
 export async function registerUser(prevState: any, formData: FormData) {
@@ -94,11 +74,11 @@ export async function registerUser(prevState: any, formData: FormData) {
             path: '/',
         });
 
+        return { success: true, token: data.token, message: 'Registration successful' };
+
     } catch (error: any) {
         return { message: error.message || 'Something went wrong', success: false };
     }
-
-    redirect('/');
 }
 
 export async function logoutUser() {
