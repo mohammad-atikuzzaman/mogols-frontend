@@ -23,29 +23,29 @@ export default function ProductCard({ product }: { product: ProductProps }) {
                 {/* Badge or overlay could go here */}
             </div>
 
-            <div className="p-4">
-                <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                    {product.name}
-                </h3>
-
-                <div className="mt-2 flex items-center gap-1">
+            <div className="p-5">
+                <div className="mb-2 flex items-center gap-1">
                     <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                    <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                        {product.rating} ({product.numReviews})
+                    <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                        {product.rating} ({product.numReviews} Reviews)
                     </span>
                 </div>
 
+                <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors line-clamp-1">
+                    {product.name}
+                </h3>
+
                 <div className="mt-4 flex items-center justify-between">
-                    <p className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
-                        Tk {product.price}
+                    <p className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
+                        Tk {product.price.toLocaleString()}
                     </p>
-                    <button className="rounded-full bg-zinc-100 p-2 text-zinc-900 transition hover:bg-indigo-600 hover:text-white dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-indigo-600">
+                    <button className="rounded-full bg-zinc-100 p-2.5 text-zinc-900 transition-all hover:bg-green-600 hover:text-white dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-green-600 shadow-sm hover:shadow-md">
                         <span className="sr-only">Add to cart</span>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            strokeWidth="1.5"
+                            strokeWidth="2"
                             stroke="currentColor"
                             className="h-5 w-5"
                         >

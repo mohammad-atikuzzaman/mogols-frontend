@@ -22,9 +22,15 @@ const deleteUser = async (id: string) => {
     return response.data;
 };
 
+const updateUser = async (user: any) => {
+    const response = await axios.put(`${NEXT_PUBLIC_API_URL}/api/users/${user._id}`, user, config());
+    return response.data;
+};
+
 const userService = {
     getUsers,
     deleteUser,
+    updateUser,
 };
 
 export default userService;

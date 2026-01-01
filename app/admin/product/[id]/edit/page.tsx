@@ -129,13 +129,20 @@ export default function EditProductPage(props: { params: Promise<{ id: string }>
 
                 <div>
                     <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Category</label>
-                    <input
-                        type="text"
-                        placeholder="Enter category"
+                    <select
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                         className="mt-1 block w-full rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-white dark:bg-zinc-950"
-                    />
+                    >
+                        <option value="">Select Category</option>
+                        <option value="Honey">Honey</option>
+                        <option value="Oils">Oils</option>
+                        <option value="Seeds">Seeds</option>
+                        <option value="Ghee">Ghee</option>
+                        <option value="Fruits">Fruits</option>
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Others">Others</option>
+                    </select>
                 </div>
 
                 <div>

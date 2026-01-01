@@ -23,15 +23,9 @@ interface CartState {
 }
 
 const initialState: CartState = {
-    cartItems: typeof window !== 'undefined' && localStorage.getItem('cartItems')
-        ? JSON.parse(localStorage.getItem('cartItems')!)
-        : [],
-    shippingAddress: typeof window !== 'undefined' && localStorage.getItem('shippingAddress')
-        ? JSON.parse(localStorage.getItem('shippingAddress')!)
-        : {},
-    paymentMethod: typeof window !== 'undefined' && localStorage.getItem('paymentMethod')
-        ? JSON.parse(localStorage.getItem('paymentMethod')!)
-        : 'COD',
+    cartItems: [],
+    shippingAddress: {},
+    paymentMethod: 'COD',
 };
 
 const cartSlice = createSlice({
@@ -77,10 +71,15 @@ const cartSlice = createSlice({
             if (typeof window !== 'undefined') {
                 localStorage.removeItem('cartItems');
             }
+        },
+        hydrateCart: (state, action: PayloadAction<CartState>) => {
+            state.cartItems = action.payload.cartItems;
+            state.shippingAddress = action.payload.shippingAddress;
+            state.paymentMethod = action.payload.paymentMethod;
         }
     },
 });
 
-export const { addToCart, removeFromCart, saveShippingAddress, savePaymentMethod, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, saveShippingAddress, savePaymentMethod, clearCart, hydrateCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

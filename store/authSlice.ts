@@ -1,18 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import authService from '../services/authService';
 
-// Get user from localStorage
-// We need to be careful with localStorage in Next.js SSR, so we might need a check
-const getUserFromStorage = () => {
-    if (typeof window !== 'undefined') {
-        const user = localStorage.getItem('user');
-        return user ? JSON.parse(user) : null;
-    }
-    return null;
-};
-
-const user = getUserFromStorage();
-
 interface User {
     _id: string;
     name: string;
@@ -30,7 +18,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-    user: user ? user : null,
+    user: null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -88,6 +76,9 @@ export const authSlice = createSlice({
             state.isError = false;
             state.message = '';
         },
+        setCredentials: (state, action: PayloadAction<User | null>) => {
+            state.user = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -125,5 +116,5 @@ export const authSlice = createSlice({
     },
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, setCredentials } = authSlice.actions;
 export default authSlice.reducer;
