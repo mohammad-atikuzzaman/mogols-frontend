@@ -35,7 +35,7 @@ export default async function Home() {
 
           {/* Abstract Shape or Image Placeholder */}
           <div className="flex-1 relative h-[400px] w-full hidden md:block">
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1615485925763-86786278061e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')] bg-cover bg-center rounded-3xl rotate-3 shadow-2xl opacity-90 hover:rotate-0 transition duration-500"></div>
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1559740509-8202abdaa7df?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center rounded-3xl rotate-3 shadow-2xl opacity-90 hover:rotate-0 transition duration-500"></div>
           </div>
         </div>
       </section>

@@ -3,26 +3,59 @@
 import { useEffect, useState } from 'react';
 import orderService from '@/services/orderService';
 import Link from 'next/link';
-import { Eye } from 'lucide-react';
+import { Eye, Check, Truck } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function AdminOrdersPage() {
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
+
+    const fetchOrders = async () => {
+        try {
+            const data = await orderService.getOrders();
+            setOrders(data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const data = await orderService.getOrders();
-                setOrders(data);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchOrders();
     }, []);
+
+    const markAsDelivered = async (orderId: string) => {
+        if (window.confirm("Are you sure you want to mark this order as delivered?")) {
+            try {
+                await orderService.deliverOrder(orderId);
+                fetchOrders(); // Refresh
+            } catch (error) {
+                console.error(error);
+                alert("Failed to update order status");
+            }
+        }
+    };
+
+    const markAsPaid = async (orderId: string) => {
+        if (window.confirm("Are you sure you want to mark this order as paid?")) {
+            try {
+                // Mock payment result for admin manual update
+                const paymentResult = {
+                    id: `admin-${Date.now()}`,
+                    status: 'COMPLETED',
+                    update_time: String(Date.now()),
+                    payer: { email_address: 'admin@example.com' }
+                };
+                await orderService.payOrder(orderId, paymentResult);
+                fetchOrders();
+            } catch (error) {
+                console.error(error);
+                alert("Failed to update order status");
+            }
+        }
+    }
 
     if (loading) return <div className="p-10 text-center">Loading orders...</div>;
 
@@ -56,7 +89,13 @@ export default function AdminOrdersPage() {
                                             {new Date(order.paidAt).toLocaleDateString()}
                                         </span>
                                     ) : (
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">No</span>
+                                        <button
+                                            onClick={() => markAsPaid(order._id)}
+                                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 hover:bg-red-200 cursor-pointer"
+                                            title="Mark as Paid"
+                                        >
+                                            No
+                                        </button>
                                     )}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">
@@ -65,13 +104,21 @@ export default function AdminOrdersPage() {
                                             {new Date(order.deliveredAt).toLocaleDateString()}
                                         </span>
                                     ) : (
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">No</span>
+                                        <button
+                                            onClick={() => markAsDelivered(order._id)}
+                                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 hover:bg-red-200 cursor-pointer"
+                                            title="Mark as Delivered"
+                                        >
+                                            No
+                                        </button>
                                     )}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <Link href={`/order/${order._id}`} className="text-indigo-600 hover:text-indigo-900">
-                                        <Eye className="h-5 w-5" />
-                                    </Link>
+                                    <div className="flex justify-end gap-2">
+                                        <Link href={`/order/${order._id}`} className="text-zinc-400 hover:text-zinc-600">
+                                            <Eye className="h-5 w-5" />
+                                        </Link>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

@@ -32,11 +32,29 @@ const getOrders = async () => {
     return response.data;
 };
 
+const checkPurchaseStatus = async (productId: string) => {
+    const response = await axios.get(`${NEXT_PUBLIC_API_URL}/api/orders/check-purchase/${productId}`, config());
+    return response.data;
+};
+
+const deliverOrder = async (orderId: string) => {
+    const response = await axios.put(`${NEXT_PUBLIC_API_URL}/api/orders/${orderId}/deliver`, {}, config());
+    return response.data;
+};
+
+const payOrder = async (orderId: string, paymentResult: any) => {
+    const response = await axios.put(`${NEXT_PUBLIC_API_URL}/api/orders/${orderId}/pay`, paymentResult, config());
+    return response.data;
+};
+
 const orderService = {
     createOrder,
     getMyOrders,
     getOrderById,
     getOrders,
+    checkPurchaseStatus,
+    deliverOrder,
+    payOrder,
 };
 
 export default orderService;

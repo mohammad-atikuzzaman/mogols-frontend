@@ -39,12 +39,24 @@ const updateProduct = async (product: any) => {
     return response.data;
 };
 
+const createReview = async (id: string, review: any) => {
+    const response = await axios.post(`${NEXT_PUBLIC_API_URL}/api/products/${id}/reviews`, review, config());
+    return response.data;
+};
+
+const getRelatedProducts = async (id: string) => {
+    const response = await axios.get(`${NEXT_PUBLIC_API_URL}/api/products/${id}/related`);
+    return response.data;
+};
+
 const productService = {
     getProducts,
     getProductById,
     deleteProduct,
     createProduct,
     updateProduct,
+    createReview,
+    getRelatedProducts,
 };
 
 export default productService;

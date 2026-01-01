@@ -1,14 +1,25 @@
 import Link from "next/link";
 import { Star, Truck, ShieldCheck, RefreshCw } from "lucide-react";
 import AddToCart from "@/components/AddToCart";
+import ProductReviews from "@/components/ProductReviews";
+import RelatedProducts from "@/components/RelatedProducts";
 
 import productService from "@/services/productService";
+import { getSession } from "@/app/actions/auth";
 
 async function getProduct(id: string) {
     try {
         return await productService.getProductById(id);
     } catch (error) {
         return null;
+    }
+}
+
+async function getRelated(id: string) {
+    try {
+        return await productService.getRelatedProducts(id);
+    } catch (error) {
+        return [];
     }
 }
 
@@ -20,6 +31,8 @@ interface Props {
 export default async function ProductPage({ params }: Props) {
     const { id } = await params;
     const product = await getProduct(id);
+    const relatedProducts = await getRelated(id);
+    const session = await getSession();
 
     if (!product) {
         return <div className="container mx-auto px-4 py-20 text-center">Product not found</div>;
@@ -111,6 +124,16 @@ export default async function ProductPage({ params }: Props) {
 
                     </div>
                 </div>
+
+                {/* Reviews Section */}
+                <ProductReviews
+                    reviews={product.reviews}
+                    productId={product._id}
+                    currentUser={session}
+                />
+
+                {/* Related Products Section */}
+                <RelatedProducts products={relatedProducts} />
             </div>
         </div>
     );
