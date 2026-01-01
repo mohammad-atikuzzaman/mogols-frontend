@@ -140,7 +140,6 @@ export default function EditProductPage(props: { params: Promise<{ id: string }>
                         <option value="Seeds">Seeds</option>
                         <option value="Ghee">Ghee</option>
                         <option value="Fruits">Fruits</option>
-                        <option value="Vegetables">Vegetables</option>
                         <option value="Others">Others</option>
                     </select>
                 </div>

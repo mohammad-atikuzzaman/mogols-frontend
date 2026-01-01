@@ -1,7 +1,39 @@
 import Link from "next/link";
+import Image from "next/image";
 import ProductCard from "../components/ProductCard";
-import { ArrowRight, Leaf, ShieldCheck, Truck, Star, Heart, Clock, Award } from "lucide-react";
+import {
+  ArrowRight,
+  Leaf,
+  ShieldCheck,
+  Truck,
+  Star,
+  Heart,
+  Clock,
+  Award,
+} from "lucide-react";
 import productService from "../services/productService";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Discover nature's finest gifts at Mogols. Authentic honey, fresh fruits, organic oils, and nutritious seeds. 100% organic and pure products delivered straight to your doorstep.",
+  keywords: [
+    "organic products",
+    "natural honey",
+    "organic oils",
+    "fresh fruits",
+    "nuts seeds",
+    "pure ghee",
+    "bangladesh organic",
+  ],
+  openGraph: {
+    title: "Mogols - 100% Organic & Pure Natural Products",
+    description:
+      "Experience the authentic taste of premium organic products. Sourced directly from trusted farmers to your table.",
+    images: ["/og-image.png"],
+  },
+};
 
 export default async function Home() {
   let products: any[] = [];
@@ -18,14 +50,92 @@ export default async function Home() {
 
   // Categories placeholder data
   const categories = [
-    { name: "Organic Honey", image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=800", link: "/shop?category=honey" },
-    { name: "Premium Oils", image: "https://images.unsplash.com/photo-1474979266404-7cadd259d366?auto=format&fit=crop&q=80&w=800", link: "/shop?category=oils" },
-    { name: "Nuts & Seeds", image: "https://images.unsplash.com/photo-1596910547037-846b1980329f?auto=format&fit=crop&q=80&w=800", link: "/shop?category=seeds" },
-    { name: "Fresh Ghee", image: "https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&q=80&w=800", link: "/shop?category=ghee" },
+    {
+      name: "Organic Honey",
+      image:
+        "https://plus.unsplash.com/premium_photo-1664273586742-f4357c9be9fb?q=80&w=874&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      link: "/shop?category=Honey",
+    },
+    {
+      name: "Premium Oils",
+      image:
+        "https://plus.unsplash.com/premium_photo-1661690729769-bbf718a0a5c9?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      link: "/shop?category=Oil",
+    },
+    {
+      name: "Nuts & Seeds",
+      image:
+        "https://images.unsplash.com/photo-1543158181-1274e5362710?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      link: "/shop?category=Seeds",
+    },
+    {
+      id: 6,
+      name: "Traditional Sweets",
+      image:
+        "https://images.unsplash.com/photo-1543773495-2cd9248a5bda?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      link: "/shop?category=Sweets",
+    },
+    {
+      name: "Fresh Fruits",
+      image:
+        "https://images.unsplash.com/photo-1719904253653-3ebc0daf04fa?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      link: "/shop?category=Seeds",
+    },
+    {
+      name: "Fresh Ghee",
+      image:
+        "https://www.cookwithkushi.com/wp-content/uploads/2022/10/best_homemade_traditional_ghee_1.jpg",
+      link: "/shop?category=ghee",
+    },
   ];
+
+  // Structured data for SEO
+  const websiteStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Mogols",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://mogols.com",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${
+          process.env.NEXT_PUBLIC_SITE_URL || "https://mogols.com"
+        }/shop?keyword={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
+  const organizationStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "Mogols",
+    description:
+      "Premium organic products including honey, oils, fruits, and seeds",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://mogols.com",
+    telephone: "+880-XXX-XXXXXXX",
+    priceRange: "$$",
+    image: `${
+      process.env.NEXT_PUBLIC_SITE_URL || "https://mogols.com"
+    }/og-image.png`,
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteStructuredData),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationStructuredData),
+        }}
+      />
 
       {/* --- HERO SECTION --- */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
@@ -39,12 +149,13 @@ export default async function Home() {
 
         <div className="container mx-auto px-4 relative z-10 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
             {/* Hero Text */}
             <div className="space-y-8 animate-in fade-in slide-in-from-left-10 duration-700">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-zinc-800 border border-green-100 dark:border-zinc-700 shadow-sm">
                 <Leaf className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">100% Organic Certified</span>
+                <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                  100% Organic Certified
+                </span>
               </div>
 
               <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-zinc-900 dark:text-white leading-[1.1]">
@@ -55,7 +166,8 @@ export default async function Home() {
               </h1>
 
               <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-lg leading-relaxed">
-                Experience the authentic taste of premium organic products. Sourced directly from trusted farmers to your table.
+                Experience the authentic taste of premium organic products.
+                Sourced directly from trusted farmers to your table.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -77,13 +189,21 @@ export default async function Home() {
               {/* Stats/Trust */}
               <div className="flex items-center gap-8 pt-4">
                 <div>
-                  <p className="text-3xl font-bold text-zinc-900 dark:text-white">10k+</p>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">Happy Customers</p>
+                  <p className="text-3xl font-bold text-zinc-900 dark:text-white">
+                    10k+
+                  </p>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Happy Customers
+                  </p>
                 </div>
                 <div className="w-px h-12 bg-zinc-200 dark:bg-zinc-800" />
                 <div>
-                  <p className="text-3xl font-bold text-zinc-900 dark:text-white">100%</p>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">Pure Organic</p>
+                  <p className="text-3xl font-bold text-zinc-900 dark:text-white">
+                    100%
+                  </p>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Pure Organic
+                  </p>
                 </div>
               </div>
             </div>
@@ -91,10 +211,13 @@ export default async function Home() {
             {/* Hero Image */}
             <div className="relative h-[500px] lg:h-[700px] hidden lg:block animate-in fade-in zoom-in-50 duration-1000 delay-200">
               <div className="absolute inset-0 bg-gradient-to-br from-green-100 to-emerald-50 dark:from-zinc-800 dark:to-zinc-900 rounded-[3rem] overflow-hidden shadow-2xl rotate-3">
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000"
-                  alt="Organic Products"
-                  className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-700"
+                  alt="Fresh organic products including honey, fruits, and natural ingredients"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 0vw, 50vw"
+                  className="object-cover object-center hover:scale-105 transition-transform duration-700"
                 />
               </div>
               {/* Floating Badge */}
@@ -104,13 +227,16 @@ export default async function Home() {
                     <Star className="w-6 h-6 text-yellow-600 fill-yellow-600" />
                   </div>
                   <div>
-                    <p className="font-bold text-zinc-900 dark:text-white">5.0 Star Rating</p>
-                    <p className="text-xs text-zinc-500">Based on 200+ Reviews</p>
+                    <p className="font-bold text-zinc-900 dark:text-white">
+                      5.0 Star Rating
+                    </p>
+                    <p className="text-xs text-zinc-500">
+                      Based on 200+ Reviews
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -125,12 +251,19 @@ export default async function Home() {
               { icon: ShieldCheck, title: "Secure Payment", desc: "100% Safe" },
               { icon: Award, title: "Top Quality", desc: "Premium Grade" },
             ].map((feature, idx) => (
-              <div key={idx} className="flex flex-col items-center text-center p-4 hover:transform hover:scale-105 transition-all">
+              <div
+                key={idx}
+                className="flex flex-col items-center text-center p-4 hover:transform hover:scale-105 transition-all"
+              >
                 <div className="p-4 bg-green-50 dark:bg-green-900/10 rounded-full mb-4 text-green-600 dark:text-green-400">
                   <feature.icon className="w-8 h-8" />
                 </div>
-                <h3 className="font-bold text-zinc-900 dark:text-zinc-100 mb-1">{feature.title}</h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">{feature.desc}</p>
+                <h3 className="font-bold text-zinc-900 dark:text-zinc-100 mb-1">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                  {feature.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -141,22 +274,39 @@ export default async function Home() {
       <section className="py-24">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-green-600 font-semibold tracking-wider uppercase text-sm">Collections</span>
-            <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mt-2 mb-4">Shop by Category</h2>
-            <p className="text-zinc-600 dark:text-zinc-400">Explore our wide range of organic products curated just for your health.</p>
+            <span className="text-green-600 font-semibold tracking-wider uppercase text-sm">
+              Collections
+            </span>
+            <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mt-2 mb-4">
+              Shop by Category
+            </h2>
+            <p className="text-zinc-600 dark:text-zinc-400">
+              Explore our wide range of organic products curated just for your
+              health.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((cat, idx) => (
-              <Link href={cat.link} key={idx} className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer">
+              <Link
+                href={cat.link}
+                key={idx}
+                className="group relative h-40 rounded-2xl overflow-hidden cursor-pointer"
+              >
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors z-10" />
-                <img
+                <Image
                   src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  alt={`${
+                    cat.name
+                  } - Browse our organic ${cat.name.toLowerCase()} collection`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-white">
-                  <h3 className="text-2xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{cat.name}</h3>
+                  <h3 className="text-2xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    {cat.name}
+                  </h3>
                   <span className="mt-2 text-sm font-medium opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full">
                     View Items
                   </span>
@@ -172,10 +322,17 @@ export default async function Home() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
             <div>
-              <span className="text-green-600 font-semibold tracking-wider uppercase text-sm">Best Sellers</span>
-              <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mt-2">New Arrivals</h2>
+              <span className="text-green-600 font-semibold tracking-wider uppercase text-sm">
+                Best Sellers
+              </span>
+              <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mt-2">
+                New Arrivals
+              </h2>
             </div>
-            <Link href="/shop" className="group flex items-center text-zinc-800 dark:text-zinc-200 font-medium hover:text-green-600 transition-colors">
+            <Link
+              href="/shop"
+              className="group flex items-center text-zinc-800 dark:text-zinc-200 font-medium hover:text-green-600 transition-colors"
+            >
               View All Products
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
@@ -199,31 +356,76 @@ export default async function Home() {
       <section className="py-24 bg-white dark:bg-zinc-950 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-zinc-900 dark:text-white mb-4">Loved by our Customers</h2>
+            <h2 className="text-3xl font-bold text-zinc-900 dark:text-white mb-4">
+              Loved by our Customers
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { name: "Sarah J.", role: "Health Enthusiast", comment: "The honey is absolutely divine. You can taste the purity in every spoonful. Highly recommended!", img: "https://randomuser.me/api/portraits/women/44.jpg" },
-              { name: "Michael R.", role: "Chef", comment: "I use Mogols organic oils in my restaurant. The quality is unmatched and my customers love it.", img: "https://randomuser.me/api/portraits/men/32.jpg" },
-              { name: "Emily W.", role: "Mother", comment: "Finally a trustworthy source for organic fruits for my kids. Fast delivery and always fresh.", img: "https://randomuser.me/api/portraits/women/68.jpg" }
+              {
+                name: "Sarah J.",
+                role: "Health Enthusiast",
+                comment:
+                  "The honey is absolutely divine. You can taste the purity in every spoonful. Highly recommended!",
+                img: "https://randomuser.me/api/portraits/women/44.jpg",
+              },
+              {
+                name: "Michael R.",
+                role: "Chef",
+                comment:
+                  "I use Mogols organic oils in my restaurant. The quality is unmatched and my customers love it.",
+                img: "https://randomuser.me/api/portraits/men/32.jpg",
+              },
+              {
+                name: "Emily W.",
+                role: "Mother",
+                comment:
+                  "Finally a trustworthy source for organic fruits for my kids. Fast delivery and always fresh.",
+                img: "https://randomuser.me/api/portraits/women/68.jpg",
+              },
             ].map((t, i) => (
-              <div key={i} className="bg-zinc-50 dark:bg-zinc-900 p-8 rounded-2xl relative">
+              <div
+                key={i}
+                className="bg-zinc-50 dark:bg-zinc-900 p-8 rounded-2xl relative"
+              >
                 <div className="absolute top-8 right-8 text-green-200 dark:text-green-900/20">
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                  <svg
+                    width="40"
+                    height="40"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V5H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM5.0166 21L5.0166 18C5.0166 16.8954 5.91203 16 7.0166 16H10.0166C10.5689 16 11.0166 15.5523 11.0166 15V9C11.0166 8.44772 10.5689 8 10.0166 8H6.0166C5.46432 8 5.0166 8.44772 5.0166 9V11C5.0166 11.5523 4.56889 12 4.0166 12H3.0166V5H13.0166V15C13.0166 18.3137 10.3303 21 7.0166 21H5.0166Z" />
                   </svg>
                 </div>
                 <div className="flex gap-4 items-center mb-6">
-                  <img src={t.img} alt={t.name} className="w-12 h-12 rounded-full object-cover" />
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                    <Image
+                      src={t.img}
+                      alt={`${t.name} - ${t.role}`}
+                      fill
+                      sizes="48px"
+                      className="object-cover"
+                    />
+                  </div>
                   <div>
-                    <h4 className="font-bold text-zinc-900 dark:text-white">{t.name}</h4>
+                    <h4 className="font-bold text-zinc-900 dark:text-white">
+                      {t.name}
+                    </h4>
                     <p className="text-xs text-zinc-500">{t.role}</p>
                   </div>
                 </div>
-                <p className="text-zinc-600 dark:text-zinc-400 italic">"{t.comment}"</p>
+                <p className="text-zinc-600 dark:text-zinc-400 italic">
+                  "{t.comment}"
+                </p>
                 <div className="flex gap-1 mt-4">
-                  {[1, 2, 3, 4, 5].map(s => <Star key={s} className="w-4 h-4 text-yellow-500 fill-yellow-500" />)}
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star
+                      key={s}
+                      className="w-4 h-4 text-yellow-500 fill-yellow-500"
+                    />
+                  ))}
                 </div>
               </div>
             ))}
@@ -238,9 +440,12 @@ export default async function Home() {
         </div>
 
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Join the Mogols Family</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+            Join the Mogols Family
+          </h2>
           <p className="text-green-100 max-w-2xl mx-auto mb-10 text-lg">
-            Unlock 15% off your first order when you subscribe. Get exclusive access to new organic harvests and health tips.
+            Unlock 15% off your first order when you subscribe. Get exclusive
+            access to new organic harvests and health tips.
           </p>
 
           <form className="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
@@ -253,10 +458,11 @@ export default async function Home() {
               Subscribe Now
             </button>
           </form>
-          <p className="text-xs text-green-200 mt-6">We care about your data in our privacy policy.</p>
+          <p className="text-xs text-green-200 mt-6">
+            We care about your data in our privacy policy.
+          </p>
         </div>
       </section>
-
     </div>
   );
 }

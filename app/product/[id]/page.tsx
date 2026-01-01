@@ -1,8 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Star, Truck, ShieldCheck, RefreshCw } from "lucide-react";
 import AddToCart from "@/components/AddToCart";
 import ProductReviews from "@/components/ProductReviews";
 import RelatedProducts from "@/components/RelatedProducts";
+import type { Metadata } from "next";
 
 import productService from "@/services/productService";
 import { getSession } from "@/app/actions/auth";
@@ -28,6 +30,43 @@ interface Props {
     params: Promise<{ id: string }>;
 }
 
+// Generate dynamic metadata for each product
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { id } = await params;
+    const product = await getProduct(id);
+
+    if (!product) {
+        return {
+            title: 'Product Not Found',
+        };
+    }
+
+    return {
+        title: product.name,
+        description: product.description || `Buy ${product.name} - 100% organic and pure. Available at Mogols.`,
+        keywords: [product.name, product.category, 'organic', 'natural', 'pure', 'mogols'],
+        openGraph: {
+            title: `${product.name} | Mogols`,
+            description: product.description,
+            images: [
+                {
+                    url: product.image,
+                    width: 800,
+                    height: 800,
+                    alt: product.name,
+                },
+            ],
+            type: 'website',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: product.name,
+            description: product.description,
+            images: [product.image],
+        },
+    };
+}
+
 export default async function ProductPage({ params }: Props) {
     const { id } = await params;
     const product = await getProduct(id);
@@ -38,8 +77,70 @@ export default async function ProductPage({ params }: Props) {
         return <div className="container mx-auto px-4 py-20 text-center">Product not found</div>;
     }
 
+    // Product structured data
+    const productStructuredData = {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: product.name,
+        image: product.image,
+        description: product.description,
+        sku: product._id,
+        brand: {
+            '@type': 'Brand',
+            name: 'Mogols',
+        },
+        offers: {
+            '@type': 'Offer',
+            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mogols.com'}/product/${product._id}`,
+            priceCurrency: 'BDT',
+            price: product.price,
+            itemCondition: 'https://schema.org/NewCondition',
+            availability: product.countInStock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+        },
+        aggregateRating: product.numReviews > 0 ? {
+            '@type': 'AggregateRating',
+            ratingValue: product.rating,
+            reviewCount: product.numReviews,
+        } : undefined,
+    };
+
+    // Breadcrumb structured data
+    const breadcrumbStructuredData = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: process.env.NEXT_PUBLIC_SITE_URL || 'https://mogols.com',
+            },
+            {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Shop',
+                item: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mogols.com'}/shop`,
+            },
+            {
+                '@type': 'ListItem',
+                position: 3,
+                name: product.name,
+                item: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mogols.com'}/product/${product._id}`,
+            },
+        ],
+    };
+
     return (
         <div className="bg-white dark:bg-zinc-950 min-h-screen">
+            {/* Structured Data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(productStructuredData) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
+            />
             <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
                 <nav className="flex mb-8 text-sm text-zinc-500">
                     <Link href="/" className="hover:text-indigo-600">Home</Link>
@@ -52,11 +153,14 @@ export default async function ProductPage({ params }: Props) {
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 lg:items-start">
                     {/* Image Gallery */}
                     <div className="flex flex-col-reverse">
-                        <div className="aspect-square w-full overview-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
-                            <img
+                        <div className="aspect-square w-full overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 relative">
+                            <Image
                                 src={product.image}
-                                alt={product.name}
-                                className="h-full w-full object-cover object-center rounded-2xl"
+                                alt={`${product.name} - ${product.description}`}
+                                fill
+                                priority
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                                className="object-cover object-center rounded-2xl"
                             />
                         </div>
                     </div>

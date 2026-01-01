@@ -18,10 +18,10 @@ export default function Footer() {
                             Shop
                         </h3>
                         <ul className="space-y-2">
-                            <li><Link href="/shop?category=honey" className="text-sm text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400">Honey</Link></li>
-                            <li><Link href="/shop?category=oil" className="text-sm text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400">Organic Oils</Link></li>
-                            <li><Link href="/shop?category=seeds" className="text-sm text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400">Seeds</Link></li>
-                            <li><Link href="/shop?category=fruits" className="text-sm text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400">Fruits</Link></li>
+                            <li><Link href="/shop?category=Honey" className="text-sm text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400">Honey</Link></li>
+                            <li><Link href="/shop?category=Oil" className="text-sm text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400">Organic Oils</Link></li>
+                            <li><Link href="/shop?category=Seeds" className="text-sm text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400">Seeds</Link></li>
+                            <li><Link href="/shop?category=Fruits" className="text-sm text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400">Fruits</Link></li>
                         </ul>
                     </div>
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Star } from "lucide-react";
 
 interface ProductProps {
@@ -14,11 +15,12 @@ export default function ProductCard({ product }: { product: ProductProps }) {
     return (
         <Link href={`/product/${product._id}`} className="group relative block overflow-hidden rounded-xl border border-zinc-200 bg-white transition hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
             <div className="relative aspect-square overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-                {/* Replace with Next/Image and actual image src handling later */}
-                <img
+                <Image
                     src={product.image}
-                    alt={product.name}
-                    className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                    alt={`${product.name} - Organic product available at Mogols`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition duration-300 group-hover:scale-105"
                 />
                 {/* Badge or overlay could go here */}
             </div>
